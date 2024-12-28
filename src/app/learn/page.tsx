@@ -21,22 +21,25 @@ const page = () => {
     });
     console.log(res)
     setresult(res)
+    setrefString('')
+    setFrames('')
+
   }
 
   return (
-    <div className="min-h-screen font-sans bg-gradient-to-r from-blue-100 to-purple-200 flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen font-sans flex flex-col items-center justify-center p-4">
       <form
         onSubmit={(e) => { submitHandler(e) }}
         onChange={() => { seterror('') }}
-        className="bg-white p-10 rounded-lg shadow-xl w-full max-w-lg"
+        className=" p-10 rounded-lg shadow-xl w-full max-w-lg"
       >
-        <h1 className="text-5xl font-extrabold mb-8 text-center text-gray-800">LRU Page Replacement</h1>
+        <h1 className="text-5xl font-extrabold mb-8 text-center text-gray-400">LRU Page Replacement</h1>
         <Input
           type='string'
           pattern='^[\d\s]+$'
           value={refString}
           onChange={(e) => { setrefString(e.target.value) }}
-          placeholder='Enter Reference String e.g : '
+          placeholder='Enter Reference String e.g : 1 0 2 0 2 0 3 2 4 '
           className="mb-6 p-4 border rounded w-full text-xl"
         />
         <Input
@@ -55,8 +58,8 @@ const page = () => {
         </button>
         {error && <p className='text-red-500 mt-6 text-xl'>{error}</p>}
       </form>
-      {result && <div className="bg-white p-10 rounded-lg shadow-xl mt-10 w-full  transition-all duration-500 ease-in-out transform">
-        <h1 className="text-4xl font-extrabold mb-8 text-center text-gray-800">Result</h1>
+      {result && <div className="bg-slate-800 p-10 rounded-lg shadow-xl mt-10 w-full  transition-all duration-500 ease-in-out transform">
+        <h1 className="text-4xl font-extrabold mb-8 text-center text-gray-400">Result</h1>
         <div className="mb-6 text-center">
           <p className="text-2xl">Frame Size: <span className="font-semibold">{result.data.frameCount}</span></p>
           <p className="text-2xl">Number of References: <span className="font-semibold">{result.data.refArr.length}</span></p>
@@ -64,7 +67,7 @@ const page = () => {
           <p className="text-red-500 text-xl">Red is the replaced value when page fault occurs</p>
         </div>
         <div>
-          <h2 className="text-3xl font-semibold mb-6 text-center text-gray-700">Reference String</h2>
+          <h2 className="text-3xl font-semibold mb-6 text-center text-gray-400">Reference String</h2>
           <div className='flex justify-center space-x-3'>
             {result.data.refArr.map((e: number, i: number) => {
               return <div key={i} className='border-2 text-blue-500 border-black w-12 h-12 flex items-center justify-center text-xl'>{e}</div>
@@ -83,7 +86,7 @@ const page = () => {
         <div className="mt-8 text-center">
           <p className="text-2xl text-green-500">Number of Hits: <span className="font-semibold">{result.data.result[result.data.result.length-1].hits}</span></p>
           <p className="text-2xl text-red-500">Page Faults: <span className="font-semibold">{result.data.result[result.data.result.length-1].faults}</span></p>
-          <p className="text-2xl">Hit Rate: <span className="font-semibold">{((result.data.result[result.data.result.length-1].hits / result.data.refArr.length) * 100).toFixed(2)}%</span></p>
+          <p className="text-2xl text-gray-800">Hit Rate: <span className="font-semibold">{((result.data.result[result.data.result.length-1].hits / result.data.refArr.length) * 100).toFixed(2)}%</span></p>
         </div>
       </div>}
     </div>
