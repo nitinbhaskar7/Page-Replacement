@@ -1,6 +1,5 @@
 import { LinkedHashSet } from "./LinkedHashSet";
-
-export function optimal(refArr: number[], frames: number) {
+export function optimal(refArr:number[], frames:number) {
   const set = new LinkedHashSet();
   let hits = 0;
   let faults = 0;
@@ -17,18 +16,17 @@ export function optimal(refArr: number[], frames: number) {
     } else {
       if (set.size() === frames) {
         let furthest = -1;
-        let replaceIdx = 0;
+        let replaceIdx = -1;
+
         set.elements().forEach((frame, idx) => {
           let nextUse = refArr.slice(i + 1).indexOf(frame);
-          if (nextUse === -1) {
-            replaceIdx = idx;
-            return;
-          }
+          if (nextUse === -1) nextUse = Infinity; 
           if (nextUse > furthest) {
             furthest = nextUse;
             replaceIdx = idx;
           }
         });
+
         replacedNumber = set.elements()[replaceIdx];
         set.remove(replacedNumber);
       }
@@ -37,7 +35,7 @@ export function optimal(refArr: number[], frames: number) {
       faultIdx = set.elements().findIndex((el) => el === refArr[i]);
     }
 
-    const fra = set.elements();
+    const fra = [...set.elements()];
     while (fra.length < frames) {
       fra.push("-");
     }
@@ -56,4 +54,3 @@ export function optimal(refArr: number[], frames: number) {
 
   return snapshot;
 }
-
