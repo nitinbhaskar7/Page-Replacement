@@ -1,19 +1,21 @@
 "use client";
+import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import axios from "axios";
-import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import AlgorithmResult from "@/components/AlgorithmResult";
+import AlgorithmInsights from "@/components/AlgotithInsights";
+import axios from "axios";
 import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
 
-const Learn = () => {
+const PageReplacementSimulator = () => {
   const [refString, setRefString] = useState<string>("1 0 2 0 2 0 3 2 4");
   const [frames, setFrames] = useState<string>("3");
   const [error, setError] = useState<string>("");
   const [results, setResults] = useState<any>({});
   const [selectedAlgo, setSelectedAlgo] = useState<string>("lru");
+  const [showResults, setShowResults] = useState<boolean>(false);
 
   const algorithms = ["lru", "mru", "fifo", "optimal"];
 
@@ -31,26 +33,27 @@ const Learn = () => {
         algo: selectedAlgo,
       });
       setResults({ ...results, [selectedAlgo]: res.data });
+      setShowResults(true);
     } catch (error) {
       setError("An error occurred while processing the request");
     }
   };
 
   return (
-    <div className="min-h-screen font-sans flex flex-col items-center justify-center p-4 bg-gray-900 text-gray-100">
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="min-h-screen font-sans flex flex-col items-center justify-center p-4 bg-gray-900 text-gray-100"
-      >
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen font-sans flex bg-gray-900 text-gray-100"
+    >
+      <div className="w-1/2 px-8 pt-2 flex h-screen flex-col justify-center items-center">
         <motion.form
           onSubmit={submitHandler}
           onChange={() => setError("")}
-          className="bg-gray-800 p-10 rounded-lg shadow-2xl w-full max-w-lg mb-8"
           initial={{ y: -50 }}
           animate={{ y: 0 }}
           transition={{ type: "spring", stiffness: 100 }}
+          className="bg-gray-800 p-10 rounded-lg shadow-2xl"
         >
           <h1 className="text-4xl font-extrabold mb-8 text-center text-white flex items-center justify-center">
             <Sparkles className="mr-2" />
@@ -77,11 +80,14 @@ const Learn = () => {
               <Button
                 key={algo}
                 type="button"
-                onClick={() => setSelectedAlgo(algo)}
+                onClick={() => {
+                  setSelectedAlgo(algo);
+                  setShowResults(false);
+                }}
                 className={cn(
                   "px-4 py-2 rounded",
                   selectedAlgo === algo
-                    ? "bg-blue-600 text-white"
+                    ? "bg-blue-600 text-white hover:bg-blue-800"
                     : "bg-gray-600 text-gray-200 hover:bg-gray-500"
                 )}
               >
@@ -97,7 +103,9 @@ const Learn = () => {
           </Button>
           {error && <p className="text-red-400 mt-6 text-xl">{error}</p>}
         </motion.form>
-        {results[selectedAlgo] && (
+      </div>
+      <div className="w-1/2 px-8 pt-2 min-h-screen overflow-y-auto no-scrollbar flex flex-col justify-center ">
+        {showResults && results[selectedAlgo] ? (
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -108,10 +116,12 @@ const Learn = () => {
               algorithm={selectedAlgo}
             />
           </motion.div>
+        ) : (
+          <AlgorithmInsights algorithm={selectedAlgo} />
         )}
-      </motion.div>
-    </div>
+      </div>
+    </motion.div>
   );
 };
 
-export default Learn;
+export default PageReplacementSimulator;
