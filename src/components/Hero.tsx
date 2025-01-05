@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { ChevronRightIcon } from "lucide-react";
-import Link from "next/link";
+import { ChevronRightIcon  } from "lucide-react";
 
+import Link from "next/link";
+import { FaGithub } from "react-icons/fa";
 export default function HeroSectionSimpleCentred() {
     return (
         <>
@@ -14,13 +15,13 @@ export default function HeroSectionSimpleCentred() {
                     {/* Title */}
                     <div className="mt-5 max-w-2xl text-center mx-auto">
                         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-                            Let&apos;s Learn LRU Page Replacement Together
+                            Let&apos;s Learn Page Replacement Together
                         </h1>
                     </div>
                     {/* End Title */}
                     <div className="mt-5 max-w-3xl text-center mx-auto">
                         <p className="text-xl text-muted-foreground">
-                            Simplify learning Least Recently Used (LRU) page replacement algorithm with this interactive guide. Without a doubt, this is the only stop you'll need to master LRU page replacement.
+                            Make learning <span className="text-white">Page Replacement</span> algorithms a <span className="text-white">"Walk in the Park"</span> with the help of this interactive guide . Without a doubt, this is the only stop you'll need to master Page Replacement. Click on Get Started to begin your journey.
                         </p>
                     </div>
                     {/* Buttons */}
@@ -30,8 +31,10 @@ export default function HeroSectionSimpleCentred() {
                                 Get started
                             </Link>
                         </Button>
-                        <Button size={"lg"} variant={"outline"}>
-                            View Code on GitHub
+                        <Button size={"lg"} variant={"outline"} asChild>
+                            <Link href={"https://github.com/nitinbhaskar7/Page-Replacement"} target="_blank">
+                            <FaGithub/> View Code on GitHub
+                            </Link>
                         </Button>
                     </div>
                     {/* End Buttons */}
